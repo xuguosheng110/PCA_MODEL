@@ -1,0 +1,20 @@
+# Build and Release Folders
+pic/
+okpic/
+model/
+[Bb]in/
+
+# Other files and folders
+.settings/
+__pycache__
+.DS_Store
+
+# Executables
+*.jpg
+*.csv
+*.ipa
+*.apk
+
+# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
+# should NOT be excluded as they contain compiler settings and other important
+# information for Eclipse / Flash Builder.

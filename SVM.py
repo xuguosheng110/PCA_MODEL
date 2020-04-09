@@ -27,7 +27,7 @@ def load_data():
     np.random.shuffle(data_sets)#打乱数据
     X = data_sets[:,0:-1]
     Y = data_sets[:,-1]
-    train_x,test_x,train_y,test_y = train_test_split(X,Y,test_size=0.3)
+    train_x, test_x,train_y,test_y = train_test_split(X,Y,test_size=0.3)
     return train_x,test_x,train_y,test_y
 
 

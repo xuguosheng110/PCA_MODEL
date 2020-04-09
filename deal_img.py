@@ -15,10 +15,10 @@ import cv2
 import numpy as np
 if not os.path.exists('data'):
     os.mkdir('data')
-img_path = r'D:\CODE\PCA_MODEL\okpic' #404 #890
+img_path = 'okpic' #ok404 #ng890
 img_list = glob.glob(os.path.join(img_path,'*.jpg'))
 print(len(img_list))
-matrix = np.empty((890,1152))
+matrix = np.empty((404,1152))
 for i,img_name in enumerate(img_list):
     img = cv2.imread(img_name,0) #(128,1152)
     img = cv2.erode(img,(3,3),iterations=5)
@@ -29,5 +29,5 @@ for i,img_name in enumerate(img_list):
     print(mean)
     matrix[i,:] = mean
 np.savetxt('data\\ok.csv', matrix, delimiter=',')
-print(matrix)
+print(matrix.shape)
 
