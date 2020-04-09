@@ -13,17 +13,21 @@ import os
 import glob
 import cv2
 import numpy as np
-
-img_path = r'D:\CODE\pca_backgroung_model\okpic'
+if not os.path.exists('data'):
+    os.mkdir('data')
+img_path = r'D:\CODE\PCA_MODEL\okpic' #404 #890
 img_list = glob.glob(os.path.join(img_path,'*.jpg'))
-
-for img_name in img_list:
-    img = cv2.imread(img_name,0)
+print(len(img_list))
+matrix = np.empty((890,1152))
+for i,img_name in enumerate(img_list):
+    img = cv2.imread(img_name,0) #(128,1152)
     img = cv2.erode(img,(3,3),iterations=5)
     img = cv2.GaussianBlur(img, (5, 5), 1.5)
-    img = img*5
-    cv2.imshow('img',img)
-    cv2.waitKey(1000)
+    # cv2.imshow('img',img)
+    # cv2.waitKey(1000)
     mean = np.mean(img,axis=0) #纵向取平均
     print(mean)
+    matrix[i,:] = mean
+np.savetxt('data\\ok.csv', matrix, delimiter=',')
+print(matrix)
 
