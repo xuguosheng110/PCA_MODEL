@@ -15,9 +15,9 @@ import os
 import glob
 from sklearn.decomposition import PCA
 import pickle
-img_path = r'D:\ok_d'
+img_path = r'G:\IMG\tian\cut_ok'
 img_list = glob.glob(os.path.join(img_path,'*.jpg'))
-print(img_list)
+print(len(img_list))
 if not os.path.exists('model'):
     os.mkdir('model')
 '''
@@ -26,6 +26,7 @@ if not os.path.exists('model'):
 '''
 def vector_extract():#生成样本矩阵并分块
     test_img = cv2.imread(img_list[0],0)
+    print(test_img.shape)
     sample_num = len(img_list)
     h,w = test_img.shape
     Container = np.zeros([sample_num,h,w])#(404, 128, 1152)
@@ -33,7 +34,7 @@ def vector_extract():#生成样本矩阵并分块
         img_vertor = cv2.imread(img_list[i],0)
         # img_vertor = np.reshape(img, -1)
         Container[i,...]=img_vertor[:]
-    datasets = np.split(Container,6,axis=2) #(404, 128, 384)*3
+    datasets = np.split(Container,8,axis=2) #(404, 128, 384)*3
     # test = datasets[0].reshape((404,-1))
     return datasets
 

@@ -14,20 +14,22 @@ import os
 import glob
 import pickle
 import time
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = '3'
 
-img_path = r'D:\ok_d'
+# img_path = r'G:\IMG\tian\cut_ok'
+img_path = r'G:\IMG\test_data\sky'
 img_list = glob.glob(os.path.join(img_path,'*.jpg'))
 model_list = []
 if not os.path.exists('okpic'):
     os.mkdir('okpic')
-for i in range(6):
+for i in range(8):
     file = open('model\\pca' + str(i) + '.txt', 'rb')
     model = pickle.load(file)
     model_list.append(model)
 SVM = pickle.load(open('model\\SVM.txt','rb'))
 
 def test(img):
-    small_pics = np.split(img, 6, axis=1)
+    small_pics = np.split(img, 8, axis=1)
     img_list = []
     for i, small_pic in enumerate(small_pics):
         data = np.reshape(small_pic, -1)  # (49152,)
@@ -36,7 +38,7 @@ def test(img):
         back = np.asarray(back, dtype=np.uint8)
         back_img = np.reshape(back, (img.shape[0], -1))
         img_list.append(back_img)
-    final_img = np.hstack((img_list[0],img_list[1],img_list[2],img_list[3],img_list[4],img_list[5]))
+    final_img = np.hstack((img_list[0],img_list[1],img_list[2],img_list[3],img_list[4],img_list[5],img_list[6],img_list[7]))
     return final_img
 
 
@@ -47,18 +49,15 @@ if __name__ == '__main__':
         start_time = time.time()
         model_img = test(img)
         diff_img = cv2.absdiff(img,model_img)
-        mean = np.mean(img,axis=0) #纵向取平均
+        diff_img = cv2.erode(diff_img, (5, 5), iterations=2)*5
+        # diff_img = cv2.GaussianBlur(diff_img, (5, 5), 1.5)*5
+        mean = np.mean(diff_img,axis=0) #纵向取平均
         result = SVM.predict([mean])
         print('used time is: ',time.time()-start_time)
-        print('result is: ',result)
-        time_list.append(time.time()-start_time)
-    time_list = np.asarray(time_list)
-    print(np.mean(time_list))
+        print('result is ok!!') if result[0]==1 else print('result is ng!!')
+        last_img = np.vstack((img,model_img,diff_img))
         # diff_img = diff_img
         # file_name = 'okpic//'+str(i)+'diff.jpg'
         # cv2.imwrite(file_name,diff_img)
-        # cv2.imshow('result',diff_img)
-        # cv2.waitKey(1000)
-
-
-
+        cv2.imshow('result',last_img)
+        cv2.waitKey(0)

@@ -16,19 +16,19 @@ from sklearn.decomposition import PCA
 import pickle
 import time
 
-img_path = r'D:\ok_d'
+img_path = r'G:\IMG\tian\cut_ng'
 img_list = glob.glob(os.path.join(img_path,'*.jpg'))
 model_list = []
-if not os.path.exists('okpic'):
-    os.mkdir('okpic')
-for i in range(6):
+if not os.path.exists('ngpic'):
+    os.mkdir('ngpic')
+for i in range(8):
     file = open('model\\pca' + str(i) + '.txt', 'rb')
     model = pickle.load(file)
     model_list.append(model)
 
 
 def test(img):
-    small_pics = np.split(img, 6, axis=1)
+    small_pics = np.split(img, 8, axis=1)
     img_list = []
     for i, small_pic in enumerate(small_pics):
         data = np.reshape(small_pic, -1)  # (49152,)
@@ -37,7 +37,7 @@ def test(img):
         back = np.asarray(back, dtype=np.uint8)
         back_img = np.reshape(back, (img.shape[0], -1))
         img_list.append(back_img)
-    final_img = np.hstack((img_list[0],img_list[1],img_list[2],img_list[3],img_list[4],img_list[5]))
+    final_img = np.hstack((img_list[0],img_list[1],img_list[2],img_list[3],img_list[4],img_list[5],img_list[6],img_list[7]))
     return final_img
 
 
@@ -49,7 +49,7 @@ if __name__ == '__main__':
         print('used time is: ',time.time()-start_time)
         diff_img =  cv2.absdiff(img,model_img)
         # diff_img = diff_img
-        file_name = 'okpic//'+str(i)+'diff.jpg'
+        file_name = 'ngpic//'+str(i)+'diff.jpg'
         cv2.imwrite(file_name,diff_img)
         # cv2.imshow('result',diff_img)
         # cv2.waitKey(1000)
