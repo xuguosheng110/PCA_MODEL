@@ -15,12 +15,16 @@ import glob
 from sklearn.decomposition import PCA
 import pickle
 import time
+import shutil
 
-img_path = r'G:\IMG\tian\cut_ng'
+# img_path = r'G:\sky_land_0415\soft_vague\ng'
+img_path = r'G:\sky_land_0415\soft_vague\ok'
 img_list = glob.glob(os.path.join(img_path,'*.jpg'))
 model_list = []
-if not os.path.exists('ngpic'):
-    os.mkdir('ngpic')
+dir_name = 'okpic0415'
+# if  os.path.exists(dir_name):
+#     shutil.rmtree(dir_name)
+# os.mkdir(dir_name)
 for i in range(8):
     file = open('model\\pca' + str(i) + '.txt', 'rb')
     model = pickle.load(file)
@@ -49,9 +53,11 @@ if __name__ == '__main__':
         print('used time is: ',time.time()-start_time)
         diff_img =  cv2.absdiff(img,model_img)
         # diff_img = diff_img
-        file_name = 'ngpic//'+str(i)+'diff.jpg'
+        file_name = dir_name+'//'+str(200+i)+'diff.jpg'
         cv2.imwrite(file_name,diff_img)
-        # cv2.imshow('result',diff_img)
+        diff_img = cv2.erode(diff_img,(5,5),iterations=1)*10
+        result_img = np.vstack((img,model_img,diff_img))
+        # cv2.imshow('OK result',result_img)
         # cv2.waitKey(1000)
 
 

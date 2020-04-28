@@ -15,8 +15,15 @@ import os
 import glob
 from sklearn.decomposition import PCA
 import pickle
-img_path = r'G:\IMG\tian\cut_ok'
-img_list = glob.glob(os.path.join(img_path,'*.jpg'))
+img_path = r'G:\sky_land_0415\soft_vague\ok'
+img_path2 = r'G:\sky_land_0415\hard_vague\A1-120-130\ok'
+img_path3 = r'G:\sky_land_0415\hard_vague\A1-130-140\ok'
+img_list  = glob.glob(os.path.join(img_path,'*.jpg'))
+img_list2 = glob.glob(os.path.join(img_path2,'*.jpg'))
+img_list3 = glob.glob(os.path.join(img_path3,'*.jpg'))
+print(len(img_list))
+# img_list  = img_list.extend(img_list2)
+# img_list  = img_list+img_list2+img_list3
 print(len(img_list))
 if not os.path.exists('model'):
     os.mkdir('model')
@@ -24,6 +31,7 @@ if not os.path.exists('model'):
 1.读取图像 2.分三块 1152/3 = 384 3.reshape 
 4.PCA降维 
 '''
+
 def vector_extract():#生成样本矩阵并分块
     test_img = cv2.imread(img_list[0],0)
     print(test_img.shape)
@@ -52,4 +60,5 @@ if __name__ == '__main__':
     Data_set = vector_extract()
     for i,data in enumerate(Data_set):
         data = data.reshape((data.shape[0],-1))
-        train(data,200,i)
+        train(data,1000,i)
+    print('training is over')

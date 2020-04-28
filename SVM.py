@@ -36,11 +36,11 @@ def svm_c(train_x,test_x,train_y,test_y):
     c_range = np.logspace(-5, 15, 11, base=2)
     gamma_range = np.logspace(-9, 3, 13, base=2)
     # 网格搜索交叉验证的参数范围，cv=3,3折交叉
-    param_grid = [{'kernel': ['linear'], 'C': c_range, 'gamma': gamma_range}]
+    param_grid = [{'kernel': ['linear','rbf'], 'C': c_range, 'gamma': gamma_range}]
     grid = GridSearchCV(svc, param_grid, cv=3, n_jobs=-1)
     print('start train >>>>>>>>>>>>>>>>>>>>>>>')
     # 训练模型
-    clf = grid.fit(train_x, train_y)
+    grid.fit(train_x, train_y)
     # 计算测试集精度
     score = grid.score(test_x, test_y)
     print('精度为%s' % score)
